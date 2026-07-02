@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OpenClaw Architecture LinkedIn Carousel</title>
+<style>
+  body { margin:0; font-family:Segoe UI, Arial, sans-serif; background:#fff; }
+  .slide { width:1080px; height:1080px; padding:40px; box-sizing:border-box; }
+  .slide:nth-child(even){background:#f8f9fa;}
+  h1 { font-size:48px; color:#0078D4; margin-bottom:20px; }
+  h2 { font-size:32px; color:#2D2D2D; margin-top:30px; margin-bottom:10px; }
+  p { font-size:24px; line-height:1.4; color:#212121; }
+  .footer { position:absolute; bottom:40px; left:40px; right:40px; text-align:center; font-size:20px; color:#555; }
+  .svg-container { margin:30px auto; width:900px; height:500px; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <h1>OpenClaw Architecture Overview</h1>
+  <p>Enterprise‑grade AI agent platform – modular, secure, extensible.</p>
+  <div class="footer">Slide 1 of 5</div>
+</div>
+
+<div class="slide">
+  <h2>Core Components</h2>
+  <div class="svg-container">
+<svg width="900" height="500" xmlns="http://www.w3.org/2000/svg" style="font-family:Segoe UI,Arial,sans-serif;">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L10,3.5 z" fill="#0078D4"/>
+    </marker>
+  </defs>
+  <!-- Gateway -->
+  <rect x="50" y="80" width="150" height="60" rx="8" ry="8" fill="#FFFFFF" stroke="#0078D4" stroke-width="2"/>
+  <text x="125" y="120" text-anchor="middle" fill="#212121" font-size="18">Gateway</text>
+  <!-- Agent Runtime -->
+  <rect x="375" y="80" width="150" height="60" rx="8" ry="8" fill="#FFFFFF" stroke="#0078D4" stroke-width="2"/>
+  <text x="450" y="120" text-anchor="middle" fill="#212121" font-size="18">Agent Runtime</text>
+  <!-- Tools & Skills -->
+  <rect x="650" y="80" width="180" height="60" rx="8" ry="8" fill="#FFFFFF" stroke="#0078D4" stroke-width="2"/>
+  <text x="740" y="120" text-anchor="middle" fill="#212121" font-size="18">Tools & Skills</text>
+  <!-- Memory & Storage -->
+  <rect x="300" y="250" width="300" height="80" rx="8" ry="8" fill="#FFFFFF" stroke="#0078D4" stroke-width="2"/>
+  <text x="450" y="295" text-anchor="middle" fill="#212121" font-size="18">Memory & Storage</text>
+  <!-- LLM Provider -->
+  <rect x="650" y="20" width="180" height="60" rx="8" ry="8" fill="#FFFFFF" stroke="#0078D4" stroke-width="2"/>
+  <text x="740" y="55" text-anchor="middle" fill="#212121" font-size="18">LLM Provider</text>
+  <!-- Data Sources -->
+  <rect x="50" y="250" width="200" height="80" rx="8" ry="8" fill="#FFFFFF" stroke="#0078D4" stroke-width="2"/>
+  <text x="150" y="295" text-anchor="middle" fill="#212121" font-size="18">Data Sources</text>
+
+  <!-- Arrows -->
+  <!-- User (off canvas) to Gateway -->
+  <line x1="30" y1="110" x2="50" y2="110" stroke="#0078D4" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="40" y="100" text-anchor="middle" fill="#0078D4" font-size="14">User</text>
+
+  <!-- Gateway -> Agent -->
+  <line x1="200" y1="110" x2="375" y2="110" stroke="#0078D4" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Agent -> Tools & Skills -->
+  <line x1="525" y1="110" x2="650" y2="110" stroke="#0078D4" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Agent -> Memory & Storage -->
+  <line x1="450" y1="140" x2="450" y2="250" stroke="#0078D4" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Agent -> LLM Provider -->
+  <line x1="525" y1="80" x2="650" y2="50" stroke="#0078D4" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Agent -> Data Sources -->
+  <line x1="450" y1="140" x2="250" y2="250" stroke="#0078D4" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- Tools & Skills -> Memory & Storage (optional) -->
+  <line x1="740" y1="140" x2="600" y2="250" stroke="#0078D4" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>
+  </div>
+  <div class="footer">Slide 2 of 5</div>
+</div>
+
+<div class="slide">
+  <h2>Data Flow & Message Flow</h2>
+  <p>1. User sends a message via Telegram/WhatsApp/etc.<br>
+  2. Gateway authenticates and routes the request.<br>
+  3. Agent Runtime selects appropriate Skills & Tools.<br>
+  4. Tools fetch data (web search, APIs, files).<br>
+  5. Agent calls LLM Provider for reasoning/generation.<br>
+  6. Result may be stored in Memory & Storage for context.<br>
+  7. Response is sent back through Gateway to the user.</p>
+  <div class="footer">Slide 3 of 5</div>
+</div>
+
+<div class="slide">
+  <h2>Security, Compliance & Extensibility</h2>
+  <p>• Token‑based auth (API key, OAuth) – configurable per‑tenant.<br>
+  • Role‑Based Access Control (RBAC) for agents and skills.<br>
+  • Audit logging of all tool invocations and LLM calls.<br>
+  • Plug‑in Skill System – isolate third‑party code in sandbox.<br>
+  • Supports on‑prem, private cloud, or SaaS deployment.<br>
+  • Data encryption at rest and in transit (TLS, AES‑256).</p>
+  <div class="footer">Slide 4 of 5</div>
+</div>
+
+<div class="slide">
+  <h2>Getting Started & Business Value</h2>
+  <p>• Deploy with Docker/Kubernetes or as a managed service.<br>
+  • Connect existing SSO (Azure AD, Okta, LDAP) via gateway auth.<br>
+  • Reduce custom AI integration time from weeks to hours.<br>
+  • Increase productivity: agents automate repetitive tasks.<br>
+  • Scale horizontally – add more agent runtimes as load grows.<br>
+  • Open‑source core with enterprise‑grade support options.</p>
+  <div class="footer">Slide 5 of 5</div>
+</div>
+</body>
+</html>
