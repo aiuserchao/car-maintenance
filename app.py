@@ -66,6 +66,13 @@ st.markdown("""
     .stButton>button {
         width: 100%;
     }
+    .oil-change-info {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -221,6 +228,22 @@ elif page == "Maintenance":
                     next_service_mileage = st.number_input("Next Service Mileage (optional)", min_value=0, value=0)
                     next_service_date = st.date_input("Next Service Date (optional)", value=None)
                 
+                # Oil change specific fields
+                oil_type = None
+                filter_type = None
+                if service_type == "Oil Change":
+                    st.markdown('<div class="oil-change-info"><h4>🛢️ Oil Change Details</h4></div>', unsafe_allow_html=True)
+                    oil_col1, oil_col2 = st.columns(2)
+                    with oil_col1:
+                        oil_type = st.selectbox("Oil Type", [
+                            "Conventional", "Synthetic Blend", "Full Synthetic", 
+                            "High Mileage Synthetic", "Diesel", "Other"
+                        ])
+                    with oil_col2:
+                        filter_type = st.selectbox("Filter Type", [
+                            "Standard", "Premium", "Extended Life", "Synthetic", "Other"
+                        ])
+                
                 submitted = st.form_submit_button("Add Maintenance Record")
                 
                 if submitted:
@@ -236,6 +259,8 @@ elif page == "Maintenance":
                         "parts_replaced": parts_replaced,
                         "next_service_mileage": next_service_mileage if next_service_mileage > 0 else None,
                         "next_service_date": next_service_date.isoformat() if next_service_date else None,
+                        "oil_type": oil_type if service_type == "Oil Change" else None,
+                        "filter_type": filter_type if service_type == "Oil Change" else None,
                         "created_at": datetime.now().isoformat()
                     }
                     
@@ -416,6 +441,34 @@ elif page == "Reports":
                 fig_pie = px.pie(values=service_counts.values, names=service_counts.index,
                                 title='Maintenance Service Types')
                 st.plotly_chart(fig_pie, use_container_width=True)
+                
+                # Oil change specific analysis
+                oil_changes = [r for r in vehicle_maintenance if r.get('service_type') == 'Oil Change']
+                if oil_changes:
+                    st.subheader("🛢️ Oil Change Analysis")
+                    df_oil = pd.DataFrame(oil_changes)
+                    df_oil['date'] = pd.to_datetime(df_oil['date'])
+                    df_oil = df_oil.sort_values('date')
+                    
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.metric("Total Oil Changes", len(df_oil))
+                    with col2:
+                        if len(df_oil) > 1:
+                            avg_interval = (df_oil['date'].iloc[-1] - df_oil['date'].iloc[0]).days / (len(df_oil) - 1)
+                            st.metric("Avg Days Between Changes", f"{int(avg_interval)} days")
+                        else:
+                            st.metric("Avg Days Between Changes", "N/A")
+                    with col3:
+                        avg_cost = df_oil['cost'].mean()
+                        st.metric("Avg Oil Change Cost", f"${avg_cost:.2f}")
+                    
+                    # Oil type distribution
+                    if 'oil_type' in df_oil.columns and df_oil['oil_type'].notna().any():
+                        oil_type_counts = df_oil['oil_type'].value_counts()
+                        fig_oil_type = px.pie(values=oil_type_counts.values, names=oil_type_counts.index,
+                                            title='Oil Type Usage')
+                        st.plotly_chart(fig_oil_type, use_container_width=True)
                 
                 # Statistics
                 col1, col2, col3 = st.columns(3)
