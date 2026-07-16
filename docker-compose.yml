@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  car-maintenance:
+    build: .
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data  # Persist your data between container restarts
